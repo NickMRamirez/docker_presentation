@@ -1,0 +1,80 @@
+Docker itinerary
+
+HOLD QUESTIONS UNTIL THE END.
+
+* On Linux, you can make Linux containers
+
+* dockerhub.com --> grab an image that exists (from non-specific to specific)
+  - ubuntu
+  - httpd
+  - microsoft/dotnet
+
+--> start to think about your container image as being a single process instead of a full OS
+
+
+https://hub.docker.com/r/microsoft/dotnet/
+
+* Explain "tags", such as "latest"
+* Create a container using the httpd example: 
+
+docker run -d --name myapache -p 8080:80 httpd:latest
+
+
+* Create httpd container with volume
+--> CSS templates: http://www.free-css.com/free-css-templates
+
+docker run -d --name myapache -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:latest
+
+
+* Forwarding ports
+* Volumes
+* Daemon mode
+* Image tags
+
+* Commands:
+  sudo docker help         --> show help
+  sudo docker run          --> creates a container from an existing image
+  sudo docker ps           --> shows running containers
+  sudo docker top [name]   --> shows top running processes in container
+  sudo docker logs [name]  --> show log output of container
+  sudo docker stats [name] --> show container statistics
+  sudo docker inspect [name] --> get IP of container
+
+  sudo docker stop [name]  --> stops a container
+  sudo docker ps -a        --> see stopped containers
+  sudo docker start [name] --> starts a stopped container
+  sudo docker rm [name]    --> removes a container
+
+
+
+
+Build an image:
+
+* docker build -t nramirez/dotnetapp:latest .
+* docker run -it --name -p 8081:80 myapp nramirez/dotnetapp:latest
+
+--> go to localhost:8081/api/values
+
+
+Docker-compose
+
+* docker-compose up -d
+* docker-compose down
+
+* Connect to the container: sudo docker exec -it [name] /bin/bash
+
+* Attach to a running container using .NET Core remote debugger
+
+* Inspect an image's layers:
+  docker history httpd
+
+* Push your images to quay.io:
+
+docker tag nramirez/dotnetapp quay.io/nickmramirez/dotnetapp:latest
+docker login quay.io
+docker push quay.io/nickmramirez/dotnetapp:latest
+
+
+
+
+
