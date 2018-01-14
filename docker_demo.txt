@@ -25,6 +25,9 @@ docker run -d --name myapache -p 8080:80 httpd:latest
 
 docker run -d --name myapache -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:latest
 
+Windows:
+docker run -d --name myapp -p 8080:80 -v ${pwd}:/usr/local/apache2/htdocs httpd:latest
+
 
 * Forwarding ports
 * Volumes
