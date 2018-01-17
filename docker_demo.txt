@@ -68,7 +68,10 @@ docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/doc
 Build an image:
 
 What goes into building our own image?
-  * Dockerfile
+  * Dockerfile - creates the image
+--> Why not a shell script? Why not Powershell or Chef? Because it's hard to
+  do rollbacks on a script.
+
   * Put your application's files into a Dockerfile (manifest), not a running container
   * When you build it, it builds an image (similar to Packer)
   * Before, we mapped a volume from the host, but now we'll build an image that has a single version of our software
