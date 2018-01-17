@@ -1,15 +1,20 @@
 Docker itinerary
 
-HOLD QUESTIONS UNTIL THE END.
 
 * On Linux, you can make Linux containers
 
 * dockerhub.com --> grab an image that exists (from non-specific to specific)
+
   - ubuntu
   - httpd
   - microsoft/dotnet
 
---> start to think about your container image as being a single process instead of a full OS
+--> start to think about your container image as being a single process instead of a full OS.
+Why? 
+  * Make dependencies explicit.
+  * You'll be able to get rid of the stuff you don't need in an image.
+  * You'll put yourself in the right frame of mind for "immutable infrastructure" 
+  instead of thinking in terms of operating systems.
 
 
 https://hub.docker.com/r/microsoft/dotnet/
@@ -23,6 +28,9 @@ docker run -d --name myapache -p 8080:80 httpd:latest
 * Create httpd container with volume
 --> CSS templates: http://www.free-css.com/free-css-templates
 
+The easiest way to develop with Docker:
+  * Map a "volume" from the host machine to a running container
+
 docker run -d --name myapache -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:latest
 
 Windows:
@@ -30,7 +38,8 @@ docker run -d --name myapp -p 8080:80 -v ${pwd}:/usr/local/apache2/htdocs httpd:
 
 
 Portainer:
-docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /opt/portainer:/data portainer/portainer
+docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /opt/portainer:/data portainer/portainer
 
 
 
@@ -48,7 +57,7 @@ docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/doc
   sudo docker stats [name] --> show container statistics
   sudo docker inspect [name] --> get IP of container
 
-  sudo docker stop [name]  --> stops a container
+  sudo docker stop [name]  --> stops a container. NOTE: 'docker ps' doesn't show stopped containers.
   sudo docker ps -a        --> see stopped containers
   sudo docker start [name] --> starts a stopped container
   sudo docker rm [name]    --> removes a container
@@ -58,12 +67,27 @@ docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/doc
 
 Build an image:
 
+What goes into building our own image?
+  * Dockerfile
+  * Put your application's files into a Dockerfile (manifest), not a running container
+  * When you build it, it builds an image (similar to Packer)
+  * Before, we mapped a volume from the host, but now we'll build an image that has a single version of our software
+
 * docker build -t nramirez/dotnetapp:latest .
+
+What's the benefit of a Docker container over a VM?
+  * Docker reuses layers, caching them on the host
+  * A container starts and stops much faster
+
+--> docker images
+--> docker history nramirez/dotnetapp
+
+
 * docker run -it --name -p 8081:80 myapp nramirez/dotnetapp:latest
 
 --> go to localhost:8081/api/values
 
-
+--------------------------------------
 Docker-compose
 
 * docker-compose up -d
@@ -73,8 +97,7 @@ Docker-compose
 
 * Attach to a running container using .NET Core remote debugger
 
-* Inspect an image's layers:
-  docker history httpd
+
 
 * Push your images to quay.io:
 
